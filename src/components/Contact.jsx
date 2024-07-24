@@ -5,6 +5,8 @@ import { styles } from "../styles";
 import { EarthCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Contact = () => {
   const formRef = useRef();
@@ -22,6 +24,11 @@ const Contact = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!form.name || !form.email || !form.message) {
+      toast.error("Please fill in all the fields.");
+      return;
+    }
+
     setLoading(true);
     //service_o35jgepp
     //service_o35jgep
@@ -34,7 +41,7 @@ const Contact = () => {
           from_name: form.name,
           to_name: "Minahil",
           from_email: form.email,
-          to_email: "hafizaminahil105@gmail.com",
+          to_email:form.email ,
           message: form.message,
         },
         "raFXttLYe1QfAWRAy"
@@ -42,7 +49,7 @@ const Contact = () => {
       .then(
         () => {
           setLoading(false);
-          alert("Thank You, I will catch you up as soon as possible.");
+          toast.success("Thank you, I will catch you up as soon as possible.");
           setForm({
             name: "",
             email: "",
@@ -52,7 +59,7 @@ const Contact = () => {
         (error) => {
           setLoading(false);
           console.log(error);
-          alert("Something went wrong, please try again later.");
+          toast.error("Something went wrong, please try again later.");
         }
       );
   };
@@ -111,6 +118,19 @@ const Contact = () => {
             {loading ? "Sending..." : "Send"}
           </button>
         </form>
+        <ToastContainer 
+                  position="top-center"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={true}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="colored"
+                  style={{ zIndex: 9999 }} 
+        />
       </motion.div>
       <motion.div
         variants={slideIn("right", "tween", 0.2, 1)}
